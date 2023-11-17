@@ -105,6 +105,13 @@ def keyboard_order():
 
         KEYBOARD[key] += values[0]
 
+special_character_list = ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', "-", "=", "\\"
+                        '~', '!', '@', "#", "$", "5", "^", "&", "*", "(", ")", "_", "+", "|",
+                        "[", "]", "{", "}"
+                        ";", "'", ":", '"',
+                        ",", ".", "/",
+                        "<", ">", "?"]
+
 
 def split_word(word):
     """
@@ -122,6 +129,9 @@ def split_word(word):
     split_index = [0]
     
     for c in char:
+        if c in special_character_list:
+            split_list.append(c)
+            continue
         char_code = ord(c) - UNICODE_N
         #초성 분리
         chosung = int(char_code / CHOSUNG_N)
