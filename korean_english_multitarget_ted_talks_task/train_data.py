@@ -22,7 +22,7 @@ for i in range(len(json_data)):
     token_list = json_data[i]["korean"].split()
     
     #for test
-    token_list = ["안녕", "나는", "행복한", "한,화,팬/"]
+    #token_list = ["안녕", "나는", "행복한", "한,화,팬/"]
 
     if len(token_list) >= 4:
         data_list = []
@@ -38,11 +38,13 @@ for i in range(len(json_data)):
             else: #label 단어가 한국어인 경우
                 split_korean_original = new_data["label"]
                 index_list, split_korean = get_special_character_index_and_removed_string(split_korean_original)
+                if not contains_only_korean(split_korean):
+                    continue
                 split_korean = split_word(split_korean)[0]
                 split_korean = convert_num(split_korean)
                 for k in range(1, len(split_korean)):
                     recovered = combine_word(recover_word(split_korean[:k]))
-
+                    # print()
 
                     if len(index_list) >= 1:
                         for i in range(len(index_list)):
@@ -51,6 +53,7 @@ for i in range(len(json_data)):
                                     recovered = recovered[:index_list[i]] + split_korean_original[index_list[i]] + recovered[index_list[i]:]
                             last_token_list = token_list[j - 3 : j] + [recovered]
                         data_list.append({"data" : last_token_list, "label" : token_list[j]})
+                        # print({"data" : last_token_list, "label" : token_list[j]})
                     else:
                         last_token_list = token_list[j - 3 : j] + [combine_word(recover_word(split_korean[:k]))]
                         data_list.append({"data" : last_token_list, "label" : token_list[j]})    
